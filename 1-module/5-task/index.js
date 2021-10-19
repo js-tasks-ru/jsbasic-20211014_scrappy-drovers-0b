@@ -1,3 +1,4 @@
 function truncate(str, maxlength) {
-  // ваш код...
+  let ellipsis = "…";
+  return (str.length > maxlength) ? str.slice(0, maxlength - 1) + ellipsis : str;
 }
