@@ -1,3 +1,6 @@
 function filterRange(arr, a, b) {
-  // ваш код...
+  const rangeArray = Array(b - a + 1)
+    .fill()
+    .map((_, i) => a + i);
+  return arr.filter((el) => rangeArray.includes(el));
 }
