@@ -1,3 +1,10 @@
 function showSalary(users, age) {
-  // ваш код...
+  const maxAge = age;
+  return users
+    .filter((user) => user.age <= maxAge)
+    .reduce(
+      (current, { balance, name }) => (current += `${name}, ${balance}\n`),
+      ''
+    )
+    .trim();
 }
