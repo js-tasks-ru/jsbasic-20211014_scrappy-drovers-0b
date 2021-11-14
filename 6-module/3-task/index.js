@@ -4,63 +4,16 @@ export default class Carousel {
   constructor(slides) {
     this.slides = slides;
     this.render();
-    let slideElements = this.elem.querySelectorAll(".carousel__slide");
-    slideElements.forEach((element) => {
-      let button = element.querySelector(".carousel__button");
-      button.onclick = function () {
-        button.dispatchEvent(
-          new CustomEvent("product-add", {
-            detail: element.dataset.id,
-            bubbles: true,
-          })
-        );
-      };
-    });
+    this.addCustomEvent();
     this.initCarousel();
-  }
-
-  initCarousel() {
-    let checkExist = setInterval(function () {
-      let slidesContainer = document.querySelector(".carousel__inner");
-      if (slidesContainer.children.length > 0) {
-        let slideWidth = slidesContainer.offsetWidth;
-        let numberOfSlides = slidesContainer.children.length;
-        let buttonRight = document.querySelector(".carousel__arrow_right");
-        let buttonLeft = document.querySelector(".carousel__arrow_left");
-        let currentWidth = 0;
-        let slidesCounter = 1;
-        if (slidesCounter === 1) {
-          buttonLeft.style.display = "none";
-        }
-        buttonRight.onclick = function () {
-          buttonLeft.style.display = "";
-          slidesCounter += 1;
-          if (slidesCounter === numberOfSlides) {
-            buttonRight.style.display = "none";
-          }
-          slidesContainer.style.transform = `translateX(${(currentWidth -=
-            slideWidth)}px)`;
-        };
-        buttonLeft.onclick = function () {
-          slidesCounter -= 1;
-          if (slidesCounter === 1) {
-            buttonLeft.style.display = "none";
-            buttonRight.style.display = "";
-          }
-          slidesContainer.style.transform = `translateX(${(currentWidth +=
-            slideWidth)}px)`;
-        };
-        clearInterval(checkExist);
-      }
-    }, 100);
   }
 
   render() {
     let composedSlides = this.slides.map((slide) => {
       return `<div class="carousel__slide" data-id="${slide.id}">
         <img src="/assets/images/carousel/${
-          slide.image
-        }" class="carousel__img" alt="slide">
+  slide.image
+}" class="carousel__img" alt="slide">
         <div class="carousel__caption">
           <span class="carousel__price">€${slide.price.toFixed(2)}</span>
           <div class="carousel__title">${slide.name}</div>
@@ -82,5 +35,50 @@ export default class Carousel {
     ${composedSlides.join("")}
       </div>
       </div>`);
+  }
+
+  addCustomEvent() {
+    let slideElements = this.elem.querySelectorAll(".carousel__slide");
+    slideElements.forEach((element) => {
+      let button = element.querySelector(".carousel__button");
+      button.onclick = function () {
+        button.dispatchEvent(
+          new CustomEvent("product-add", {
+            detail: element.dataset.id,
+            bubbles: true,
+          })
+        );
+      };
+    });
+  }
+
+  initCarousel() {
+    let slidesContainer = this.elem.querySelector(".carousel__inner");
+    let numberOfSlides = slidesContainer.children.length;
+    let buttonRight = this.elem.querySelector(".carousel__arrow_right");
+    let buttonLeft = this.elem.querySelector(".carousel__arrow_left");
+    let currentWidth = 0;
+    let slidesCounter = 1;
+    if (slidesCounter === 1) {
+      buttonLeft.style.display = "none";
+    }
+    buttonRight.onclick = function () {
+      buttonLeft.style.display = "";
+      slidesCounter += 1;
+      if (slidesCounter === numberOfSlides) {
+        buttonRight.style.display = "none";
+      }
+      slidesContainer.style.transform = `translateX(${(currentWidth -=
+        slidesContainer.offsetWidth)}px)`;
+    };
+    buttonLeft.onclick = function () {
+      slidesCounter -= 1;
+      if (slidesCounter === 1) {
+        buttonLeft.style.display = "none";
+        buttonRight.style.display = "";
+      }
+      slidesContainer.style.transform = `translateX(${(currentWidth +=
+        slidesContainer.offsetWidth)}px)`;
+    };
   }
 }
