@@ -44,7 +44,6 @@ export default class Cart {
   }
 
   isEmpty() {
-    console.log(this.cartItems.length);
     return this.cartItems.length === 0;
   }
 
