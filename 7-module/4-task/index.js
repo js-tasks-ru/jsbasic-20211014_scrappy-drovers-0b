@@ -31,10 +31,10 @@ export default class StepSlider {
       return `<span></span>`;
     });
     this.elem.innerHTML = `
-    <div class="slider__thumb" style="left: 25%;">
-    <span class="slider__value">1</span>
+    <div class="slider__thumb" style="left: ${this.calculatePercentage(this.value)}%;">
+    <span class="slider__value">${this.value}</span>
     </div>
-    <div class="slider__progress" style="width: 25%;"></div>
+    <div class="slider__progress" style="width: ${this.calculatePercentage(this.value)}%;"></div>
     <div class="slider__steps">
       ${spans.join("")}
     </div>

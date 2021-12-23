@@ -30,19 +30,31 @@ export default class ProductGrid {
       this.filteredProducts = this.filteredProducts.filter((product) => {
         let match = [];
         let properties = Object.keys(this.filters);
-        properties.forEach((k) => {
-          if (k === "noNuts") {
-            match.push(this.filters[k] === !(product.nuts || false));
+        properties.forEach((property) => {
+          let value = this.filters[property];
+          if (property === "noNuts") {
+            if (value) {
+              match.push(value === (!product.nuts ?? true));
+            } else {
+              match.push(true);
+            }
           }
-          if (k === "vegeterianOnly") {
-            match.push(this.filters[k] === (product.vegeterian || false));
+          if (property === "vegeterianOnly") {
+            if (value) {
+              match.push(
+                value === (product.vegeterian ?? false)
+              );
+            } else {
+              match.push(true);
+            }
           }
-          if (k === "maxSpiciness") {
-            match.push(this.filters[k] >= (product.spiciness || 0));
+          if (property === "maxSpiciness") {
+            match.push(value >= (product.spiciness ?? 0));
           }
-          if (k === "category") {
+          if (property === "category") {
             match.push(
-              this.filters[k] === product.category || this.filters[k] === ""
+              value === product.category ||
+                (value ?? "") === ""
             );
           }
         });
